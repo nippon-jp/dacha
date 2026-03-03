@@ -121,21 +121,30 @@
   }
   .hero-eyebrow .star { color: var(--golden); }
 
+  /* H1: 大画面は1行、中画面で自然に2行、スマホは縦積み */
   .hero h1 {
     font-family: 'Shippori Mincho', serif;
-    font-size: clamp(44px, 8vw, 96px);
-    font-weight: 800; line-height: 1.2;
-    color: var(--forest); letter-spacing: 0.03em;
+    font-weight: 800; line-height: 1.25;
+    color: var(--forest); letter-spacing: 0.04em;
     margin-bottom: 36px;
     animation: fadeUp 1.1s 0.25s ease both;
+    /* デフォルト：大画面 1行 */
+    font-size: clamp(40px, 5.5vw, 88px);
+    white-space: nowrap;
   }
+  /* 改行タグ：デフォルトは非表示 */
+  .hero h1 .h1-br { display: none; }
+
   .hero-lead {
-    font-size: clamp(14px, 1.6vw, 17px);
-    line-height: 2.4; color: var(--warm-brown);
-    letter-spacing: 0.08em; max-width: 620px;
-    margin: 0 auto 56px;
+    font-size: clamp(13px, 1.5vw, 16px);
+    line-height: 2.5; color: var(--warm-brown);
+    letter-spacing: 0.08em; max-width: 600px;
+    margin: 0 auto 52px;
     animation: fadeUp 1.1s 0.45s ease both;
   }
+  /* hero-lead の <br> はタブレット以下で非表示に */
+  .hero-lead .lead-br { display: inline; }
+
   .hero-cta {
     display: inline-flex; gap: 20px; flex-wrap: wrap; justify-content: center;
     animation: fadeUp 1.1s 0.65s ease both;
@@ -357,18 +366,114 @@
   .reveal.visible{opacity:1;transform:translateY(0)}
   .d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}
 
-  @media(max-width:768px){
-    header{padding:12px 20px}
-    nav{display:none}
-    section{padding:80px 24px}
-    .about-wrap,.nation-wrap,.footer-inner{grid-template-columns:1fr}
-    .pillars,.community-grid,.stories{grid-template-columns:1fr}
-    .how-steps{grid-template-columns:repeat(2,1fr)}
-    .how-steps::before{display:none}
-    .items-grid{grid-template-columns:repeat(3,1fr)}
-    .survey-box{padding:40px 28px}
-    footer{padding:60px 24px 36px}
+  /* =====================
+     RESPONSIVE — 3 TIERS
+  ===================== */
+
+  /* ハンバーガーはデフォルト非表示 */
+  .hamburger { display: none; }
+
+  /* ── タブレット (〜1024px) ── */
+  @media (max-width: 1024px) {
+    header { padding: 12px 28px; }
+    nav { gap: 20px; }
+    nav a { font-size: 11px; }
+    section { padding: 88px 36px; }
+
+    /* H1: 2行に折る */
+    .hero h1 { white-space: normal; font-size: clamp(40px, 6.5vw, 72px); }
+    .hero h1 .h1-br { display: block; }
+    .hero-lead .lead-br { display: none; }
+
+    .about-wrap { gap: 40px; }
+    .pillars { gap: 20px; }
+    .how-steps { grid-template-columns: repeat(2,1fr); gap: 28px 0; }
+    .how-steps::before { display: none; }
+    .items-grid { grid-template-columns: repeat(4,1fr); }
+    .nation-wrap { gap: 40px; }
+    .footer-inner { gap: 40px; }
+    .line-box { padding: 48px 40px; }
   }
+
+  /* ── スマートフォン 横 / 小タブ (〜768px) ── */
+  @media (max-width: 768px) {
+    header { padding: 12px 20px; }
+    nav { display: none; }
+
+    /* ハンバーガーメニュー */
+    .hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; z-index: 110;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--forest); border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .mobile-nav {
+      display: none; position: fixed; inset: 0; z-index: 105;
+      background: rgba(250,246,237,0.97); backdrop-filter: blur(10px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 32px;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 18px; color: var(--forest);
+      text-decoration: none; letter-spacing: 0.18em;
+    }
+    .mobile-nav-close {
+      position: absolute; top: 20px; right: 24px;
+      font-size: 28px; color: var(--warm-brown); cursor: pointer;
+      font-family: serif; line-height: 1;
+    }
+
+    section { padding: 72px 20px; }
+
+    /* H1: スマホは2行 */
+    .hero { padding: 110px 20px 80px; }
+    .hero h1 { white-space: normal; font-size: clamp(36px, 9.5vw, 54px); letter-spacing: 0.02em; }
+    .hero h1 .h1-br { display: block; }
+    .hero-eyebrow { font-size: 10px; padding: 6px 16px; margin-bottom: 28px; }
+    .hero-lead { font-size: 13px; line-height: 2.3; }
+    .hero-lead .lead-br { display: none; }
+    .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
+    .btn-primary, .btn-ghost { width: 100%; max-width: 300px; justify-content: center; padding: 14px 28px; }
+
+    .about-wrap,.nation-wrap,.footer-inner { grid-template-columns: 1fr; }
+    .pillars,.community-grid,.stories { grid-template-columns: 1fr; }
+    .how-steps { grid-template-columns: repeat(2,1fr); }
+    .items-grid { grid-template-columns: repeat(2,1fr); }
+    .cities { grid-template-columns: repeat(2,1fr); }
+    .survey-box { padding: 36px 24px; }
+    .line-box { padding: 40px 24px; }
+    .btn-line { width: 100%; max-width: 320px; justify-content: center; padding: 16px 20px; }
+    footer { padding: 56px 20px 32px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  /* ── スマートフォン 縦 (〜480px) ── */
+  @media (max-width: 480px) {
+    .page-border { border-width: 8px; }
+
+    /* H1: 最小でも読みやすく */
+    .hero h1 { font-size: clamp(32px, 10vw, 44px); line-height: 1.3; }
+    .hero-eyebrow { display: none; } /* 超小画面では非表示 */
+    .hero-lead { font-size: 12.5px; }
+
+    .section-title { font-size: clamp(24px, 7vw, 36px); }
+    .items-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
+    .item-card { padding: 20px 8px 14px; }
+    .item-emoji { font-size: 32px; }
+    .how-steps { grid-template-columns: 1fr; gap: 24px; }
+    .step-circle { width: 72px; height: 72px; font-size: 30px; }
+    .stories { grid-template-columns: 1fr; }
+    .cities { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+    .survey-box { padding: 28px 16px; }
+    .line-box { padding: 32px 16px; }
+  }
+
 </style>
 </head>
 <body>
@@ -390,7 +495,21 @@
     <a href="#survey">アンケート</a>
     <a href="#line-join" style="color:var(--moss);font-weight:700;">💬 LINE参加</a>
   </nav>
+  <div class="hamburger" id="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </div>
 </header>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" id="mobileNav">
+  <span class="mobile-nav-close" id="mobileClose">✕</span>
+  <a href="#about" class="mobile-link">ダーチャとは</a>
+  <a href="#barter" class="mobile-link">物々交換</a>
+  <a href="#community" class="mobile-link">コミュニティ</a>
+  <a href="#nationwide" class="mobile-link">全国展開</a>
+  <a href="#survey" class="mobile-link">アンケート</a>
+  <a href="#line-join" class="mobile-link" style="color:#06C755;font-weight:700;">💬 LINE参加</a>
+</nav>
 
 <!-- HERO -->
 <section class="hero">
@@ -405,10 +524,10 @@
     <div class="hero-eyebrow">
       <span class="star">✦</span> 日本ダーチャ協会 <span class="star">✦</span>
     </div>
-    <h1>大地に根ざす、<br>物々交換の輪。</h1>
+    <h1>大地に根ざす、<span class="h1-br"><br></span>物々交換の輪。</h1>
     <p class="hero-lead">
-      自然農法で育てた野菜、手づくりの保存食、庭の花、技と知恵——<br>
-      お金ではなく、心と心で交わすやりとりが、<br>
+      自然農法で育てた野菜、手づくりの保存食、庭の花、技と知恵——<span class="lead-br"><br></span>
+      お金ではなく、心と心で交わすやりとりが、<span class="lead-br"><br></span>
       新しいコミュニティをつくります。
     </p>
     <div class="hero-cta">
@@ -675,6 +794,18 @@
 </footer>
 
 <script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileClose = document.getElementById('mobileClose');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
+  hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+  mobileClose.addEventListener('click', () => mobileNav.classList.remove('open'));
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => mobileNav.classList.remove('open'));
+  });
+
   // Cursor
   const cursor = document.getElementById('cursor');
   document.addEventListener('mousemove', e => {
