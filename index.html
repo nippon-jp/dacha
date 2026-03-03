@@ -282,6 +282,62 @@
   .smeta{font-family:'Shippori Mincho',serif;font-size:12px;color:var(--forest);letter-spacing:0.1em}
   .survey-soon{display:inline-block;font-family:'Shippori Mincho',serif;font-size:12px;letter-spacing:0.18em;color:var(--sage);border:1px dashed var(--sage);border-radius:4px;padding:14px 36px}
 
+  /* LINE JOIN */
+  #line-join { background: var(--forest); }
+  .line-box {
+    max-width: 720px; margin: 0 auto;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(250,246,237,0.25);
+    border-radius: 10px; padding: 60px 52px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .line-box::before {
+    content: "💬"; position: absolute;
+    right: -20px; bottom: -20px;
+    font-size: 150px; opacity: 0.06; pointer-events: none;
+  }
+  .line-logo {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #06C755; color: #fff;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 13px; letter-spacing: 0.14em; font-weight: 700;
+    padding: 10px 22px; border-radius: 50px;
+    margin-bottom: 28px;
+  }
+  .line-logo::before { content: "LINE"; font-size: 11px; background: #fff; color: #06C755; padding: 2px 7px; border-radius: 4px; font-weight: 800; }
+  .line-box h2 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(24px, 3.5vw, 40px);
+    font-weight: 800; color: var(--cream);
+    line-height: 1.4; letter-spacing: 0.05em;
+    margin-bottom: 20px;
+  }
+  .line-box p {
+    font-size: 14px; line-height: 2.5; color: rgba(250,246,237,0.78);
+    letter-spacing: 0.07em; margin-bottom: 40px;
+  }
+  .btn-line {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 14px; letter-spacing: 0.18em; font-weight: 700;
+    padding: 18px 52px; border-radius: 50px;
+    background: #06C755; color: #fff;
+    text-decoration: none;
+    border: 2px solid #06C755;
+    transition: all 0.35s;
+    box-shadow: 0 6px 24px rgba(6,199,85,0.35);
+  }
+  .btn-line:hover {
+    background: transparent; color: #06C755;
+    box-shadow: 0 6px 32px rgba(6,199,85,0.2);
+  }
+  .line-note {
+    margin-top: 18px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 11px; letter-spacing: 0.18em;
+    color: rgba(250,246,237,0.45);
+  }
+
   /* FOOTER */
   footer{background:var(--forest);color:var(--cream);padding:84px 52px 44px;position:relative;overflow:hidden}
   footer::before{content:"🌿";position:absolute;right:-30px;bottom:-20px;font-size:220px;opacity:0.05;transform:rotate(-18deg);pointer-events:none}
@@ -332,6 +388,7 @@
     <a href="#community">コミュニティ</a>
     <a href="#nationwide">全国展開</a>
     <a href="#survey">アンケート</a>
+    <a href="#line-join" style="color:var(--moss);font-weight:700;">💬 LINE参加</a>
   </nav>
 </header>
 
@@ -357,6 +414,7 @@
     <div class="hero-cta">
       <a href="#barter" class="btn-primary">🔄 物々交換を知る</a>
       <a href="#about" class="btn-ghost">ダーチャとは</a>
+      <a href="#line-join" class="btn-ghost" style="border-color:#06C755;color:#06C755;">💬 LINEで参加</a>
     </div>
   </div>
   <div class="scroll-cue">SCROLL</div>
@@ -563,6 +621,25 @@
   </div>
 </section>
 
+<!-- LINE JOIN -->
+<section id="line-join">
+  <div class="line-box reveal">
+    <div class="line-logo">オープンチャット</div>
+    <h2>LINEで仲間に<br>参加しませんか？</h2>
+    <p>
+      日本ダーチャ協会のオープンチャットでは、<br>
+      物々交換の情報交換・農作業のつながり・<br>
+      全国のダーチャ仲間との交流が楽しめます。<br>
+      どなたでも無料でご参加いただけます。
+    </p>
+    <a href="https://line.me/ti/g2/pwFzSZ2k4qTnz3UR9od4LJJNcraxeg7T4XXvfg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+       target="_blank" rel="noopener" class="btn-line">
+      💬 オープンチャットに参加する
+    </a>
+    <p class="line-note">※ LINEアプリが必要です　／　参加は無料・匿名OK</p>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -579,6 +656,7 @@
         <li><a href="#community">コミュニティ</a></li>
         <li><a href="#nationwide">全国展開</a></li>
         <li><a href="#survey">アンケート</a></li>
+        <li><a href="#line-join" style="color:#06C755;">💬 LINE参加</a></li>
       </ul>
     </div>
     <div class="footer-nav">
