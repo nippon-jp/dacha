@@ -118,7 +118,7 @@
     font-size: 11px; letter-spacing: 0.25em; color: var(--warm-brown);
     border: 1px solid rgba(107,76,42,0.35);
     padding: 7px 24px; border-radius: 50px;
-    margin-bottom: 44px;
+    margin-bottom: 32px;
     animation: fadeDown 1s ease both;
   }
   .hero-eyebrow .star { color: var(--golden); }
@@ -127,10 +127,14 @@
   .hero h1 {
     font-family: 'Shippori Mincho', serif;
     font-weight: 800;
-    line-height: 1.35;
+    /* 2行タイトルに最適な行間 — 詰めすぎず空きすぎず */
+    line-height: 1.0;
     color: var(--forest);
-    letter-spacing: 0.04em;
-    margin-bottom: 36px;
+    letter-spacing: 0.06em;
+    /* eyebrow との間：タイトル感を持たせる余白 */
+    margin-top: 0;
+    /* リード文との間：H1の重さに見合う余白 */
+    margin-bottom: 0.9em;
     animation: fadeUp 1.1s 0.25s ease both;
     font-size: clamp(36px, 5.5vw, 80px);
     white-space: normal;
@@ -139,10 +143,13 @@
   .hero h1 .h1-br { display: block; }
 
   .hero-lead {
-    font-size: clamp(13px, 1.5vw, 16px);
-    line-height: 2.5; color: var(--warm-brown);
-    letter-spacing: 0.08em; max-width: 600px;
-    margin: 0 auto 52px;
+    font-size: clamp(13px, 1.4vw, 16px);
+    /* リード文は本文的な行間でゆったりと */
+    line-height: 2.2;
+    color: var(--warm-brown);
+    letter-spacing: 0.07em;
+    max-width: 580px;
+    margin: 0 auto 48px;
     animation: fadeUp 1.1s 0.45s ease both;
   }
   /* hero-lead の <br> はタブレット以下で非表示に */
@@ -384,7 +391,8 @@
     section { padding: 88px 36px; }
 
     /* H1: タブレットでフォントサイズ調整（2行維持） */
-    .hero h1 { font-size: clamp(36px, 6vw, 60px); }
+    .hero h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.0; margin-bottom: 0.85em; }
+    .hero-lead { font-size: clamp(13px, 1.6vw, 15px); line-height: 2.1; margin-bottom: 40px; }
     .hero-lead .lead-br { display: none; }
 
     .about-wrap { gap: 40px; }
@@ -434,7 +442,9 @@
 
     /* H1: スマホでフォントサイズ調整（2行維持） */
     .hero { padding: 110px 20px 80px; }
-    .hero h1 { font-size: clamp(30px, 8.5vw, 48px); letter-spacing: 0.02em; line-height: 1.4; }
+    .hero-eyebrow { margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(30px, 8.5vw, 48px); letter-spacing: 0.02em; line-height: 1.0; margin-bottom: 0.8em; }
+    .hero-lead { font-size: 13px; line-height: 2.0; margin-bottom: 36px; }
     .hero-eyebrow { font-size: 10px; padding: 6px 16px; margin-bottom: 28px; }
     .hero-lead { font-size: 13px; line-height: 2.3; }
     .hero-lead .lead-br { display: none; }
@@ -458,7 +468,8 @@
     .page-border { border-width: 8px; }
 
     /* H1: 最小サイズでも2行で読みやすく */
-    .hero h1 { font-size: clamp(28px, 9vw, 40px); line-height: 1.45; }
+    .hero h1 { font-size: clamp(28px, 9vw, 40px); line-height: 1.0; margin-bottom: 0.75em; }
+    .hero-lead { font-size: 12.5px; line-height: 1.95; margin-bottom: 28px; }
     .hero-eyebrow { display: none; } /* 超小画面では非表示 */
     .hero-lead { font-size: 12.5px; }
 
@@ -525,7 +536,7 @@
     <div class="hero-eyebrow">
       <span class="star">✦</span> 日本ダーチャ協会 <span class="star">✦</span>
     </div>
-    <h1>大地に根ざす<span class="h1-br"><br></span>物々交換の輪</h1>
+    <h1>大地に根ざす、<span class="h1-br"><br></span>物々交換の輪。</h1>
     <p class="hero-lead">
       自然農法で育てた野菜、手づくりの保存食、庭の花、技と知恵——<span class="lead-br"><br></span>
       お金ではなく、心と心で交わすやりとりが、<span class="lead-br"><br></span>
