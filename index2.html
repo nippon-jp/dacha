@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>交換の市 | 日本ダーチャ協会</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   DESIGN SYSTEM — 交換の市
+   和紙 × 朱 × 墨 × ボタニカル
+══════════════════════════════════════════════ */
+:root {
+  --wa:        #f7f2e8;      /* 和紙 */
+  --wa2:       #ede5d0;      /* 濃い和紙 */
+  --wa3:       #e0d4b8;
+  --sumi:      #1e1810;      /* 墨 */
+  --sumi2:     #3a3020;
+  --sumi3:     #5a4e38;
+  --shu:       #c0392b;      /* 朱 */
+  --shu2:      #e05444;
+  --shu-pale:  rgba(192,57,43,.12);
+  --mori:      #3a5a2a;      /* 森 */
+  --mori2:     #5a7a4a;
+  --mori-pale: rgba(58,90,42,.1);
+  --kin:       #b8860b;      /* 金 */
+  --kin2:      #d4a020;
+  --kin-pale:  rgba(184,134,11,.12);
+
+  --r4:4px; --r8:8px; --r12:12px; --r99:9999px;
+  --sh1: 0 2px 8px rgba(30,24,16,.08);
+  --sh2: 0 6px 20px rgba(30,24,16,.14);
+  --sh3: 0 16px 40px rgba(30,24,16,.18);
+  --t: all .22s ease;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:'Noto Serif JP',serif;background:var(--wa);color:var(--sumi);min-height:100vh;overflow-x:hidden}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,textarea,select{font-family:'Noto Serif JP',serif;color:var(--sumi)}
+
+/* ── 和紙テクスチャ ── */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ── 朱枠 ── */
+.page-border{
+  position:fixed;inset:0;pointer-events:none;z-index:9999;
+  border:10px solid transparent;
+  border-image:repeating-linear-gradient(
+    90deg,
+    var(--shu) 0,var(--shu) 6px,
+    transparent 6px,transparent 14px,
+    var(--kin) 14px,var(--kin) 17px,
+    transparent 17px,transparent 24px
+  ) 10;
+}
+
+/* ══ TOPBAR ══ */
+#topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(247,242,232,.95);backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--shu);
+  padding:10px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow: 0 2px 12px rgba(192,57,43,.12);
+}
+.brand{
+  font-family:'Shippori Mincho',serif;font-size:18px;font-weight:800;
+  color:var(--shu);letter-spacing:.12em;
+  display:flex;align-items:center;gap:10px;
+}
+.brand-sub{font-size:11px;color:var(--sumi3);letter-spacing:.2em;font-weight:400}
+.topbar-nav{display:flex;gap:4px;align-items:center}
+.tnav-btn{
+  font-family:'Shippori Mincho',serif;font-size:12px;letter-spacing:.12em;
+  padding:7px 14px;border-radius:var(--r99);color:var(--sumi2);
+  transition:var(--t);
+}
+.tnav-btn:hover,.tnav-btn.active{background:var(--shu-pale);color:var(--shu)}
+.tnav-btn.active{font-weight:700}
+.user-chip{
+  font-family:'Shippori Mincho',serif;font-size:11px;letter-spacing:.1em;
+  background:var(--mori-pale);color:var(--mori);
+  border:1px solid rgba(58,90,42,.25);border-radius:var(--r99);
+  padding:5px 12px;display:flex;align-items:center;gap:6px;
+}
+
+/* ══ LAYOUT ══ */
+#app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:24px 20px 80px}
+.page{display:none;animation:pgIn .35s ease both}
+.page.active{display:block}
+@keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ AUTH ══ */
+.auth-wrap{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-box{
+  background:var(--wa2);border:1px solid rgba(192,57,43,.2);
+  border-radius:var(--r12);padding:48px 40px;width:100%;max-width:440px;
+  position:relative;overflow:hidden;box-shadow:var(--sh3);
+  animation:pgIn .5s ease both;
+}
+.auth-box::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--shu),var(--kin),var(--mori))}
+.auth-mark{font-size:52px;text-align:center;display:block;margin-bottom:14px;animation:sway 3s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.auth-title{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--shu);text-align:center;letter-spacing:.06em;margin-bottom:4px}
+.auth-sub{font-size:12px;color:var(--sumi3);text-align:center;letter-spacing:.12em;margin-bottom:24px}
+.auth-tabs{display:flex;border:1px solid rgba(192,57,43,.2);border-radius:var(--r99);overflow:hidden;margin-bottom:20px}
+.auth-tab{flex:1;padding:9px;font-family:'Shippori Mincho',serif;font-size:12px;letter-spacing:.12em;text-align:center;color:var(--sumi3);cursor:pointer;transition:var(--t)}
+.auth-tab.on{background:var(--shu);color:#fff}
+
+/* ══ FORM FIELD ══ */
+.field{margin-bottom:14px}
+.field label{display:block;font-family:'Shippori Mincho',serif;font-size:11px;letter-spacing:.2em;color:var(--mori2);margin-bottom:5px}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--wa);border:1px solid rgba(58,90,42,.28);border-radius:var(--r4);
+  padding:10px 13px;font-size:13px;outline:none;transition:border-color .22s,box-shadow .22s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--mori);box-shadow:0 0 0 3px var(--mori-pale)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.8}
+.ferr{font-size:11px;color:var(--shu);margin-top:4px;letter-spacing:.06em}
+
+/* ══ BUTTONS ══ */
+.btn{font-family:'Shippori Mincho',serif;letter-spacing:.15em;border-radius:var(--r99);transition:var(--t);display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:13px}
+.btn-primary{background:var(--shu);color:#fff;border:2px solid var(--shu);padding:11px 26px}
+.btn-primary:hover{background:transparent;color:var(--shu)}
+.btn-ghost{background:transparent;color:var(--sumi3);border:1px solid rgba(90,74,56,.3);padding:9px 22px}
+.btn-ghost:hover{background:var(--wa2);border-color:var(--sumi3)}
+.btn-mori{background:var(--mori);color:#fff;border:2px solid var(--mori);padding:10px 22px}
+.btn-mori:hover{background:transparent;color:var(--mori)}
+.btn-sm{padding:6px 14px;font-size:11px}
+.btn-xs{padding:4px 10px;font-size:10px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* ══ DEMO HINT ══ */
+.demo-hint{margin-top:14px;padding:11px 14px;background:var(--kin-pale);border:1px solid rgba(184,134,11,.3);border-radius:var(--r8);font-size:11px;color:var(--sumi3);letter-spacing:.07em;line-height:2;text-align:center}
+
+/* ══ SECTION HEADER ══ */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.sec-title{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:800;color:var(--sumi);letter-spacing:.06em;display:flex;align-items:center;gap:10px}
+.sec-title::before{content:"";display:block;width:4px;height:22px;background:var(--shu);border-radius:2px}
+
+/* ══ FILTER BAR ══ */
+.filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:var(--wa2);border-radius:var(--r8);border:1px solid rgba(58,90,42,.15)}
+.filter-label{font-family:'Shippori Mincho',serif;font-size:11px;letter-spacing:.18em;color:var(--mori2)}
+.fbtn{font-family:'Shippori Mincho',serif;font-size:11px;letter-spacing:.1em;padding:5px 13px;border-radius:var(--r99);border:1px solid rgba(58,90,42,.25);background:transparent;color:var(--sumi3);cursor:pointer;transition:var(--t)}
+.fbtn:hover,.fbtn.on{background:var(--mori);color:#fff;border-color:var(--mori)}
+.search-box{flex:1;min-width:160px;background:var(--wa);border:1px solid rgba(58,90,42,.25);border-radius:var(--r99);padding:7px 14px;font-size:12px;outline:none;transition:border-color .22s}
+.search-box:focus{border-color:var(--mori)}
+
+/* ══ GRID ══ */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+
+/* ══ ITEM CARD ══ */
+.item-card{
+  background:var(--wa2);border:1px solid rgba(192,57,43,.15);border-radius:var(--r12);
+  overflow:hidden;transition:transform .25s,box-shadow .25s;
+  position:relative;cursor:pointer;
+  animation:pgIn .4s ease both;
+}
+.item-card:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
+.item-card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--shu),var(--kin))}
+.item-img{height:180px;overflow:hidden;background:var(--wa3);display:flex;align-items:center;justify-content:center;font-size:56px}
+.item-img img{width:100%;height:100%;object-fit:cover}
+.item-body{padding:14px 16px}
+.item-cat{font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:.18em;padding:2px 9px;border-radius:var(--r99);background:var(--shu-pale);color:var(--shu);border:1px solid rgba(192,57,43,.2);display:inline-block;margin-bottom:7px}
+.item-title{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--sumi);letter-spacing:.05em;margin-bottom:5px;line-height:1.4}
+.item-desc{font-size:12px;color:var(--sumi3);line-height:1.9;letter-spacing:.04em;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.item-owner{font-size:11px;color:var(--mori2);letter-spacing:.07em;display:flex;align-items:center;gap:4px}
+.item-condition{font-size:10px;padding:2px 8px;border-radius:var(--r99);background:var(--mori-pale);color:var(--mori);border:1px solid rgba(58,90,42,.2);letter-spacing:.08em}
+
+/* ══ WANT CARD ══ */
+.want-card{
+  background:var(--wa2);border:1px solid rgba(184,134,11,.2);border-radius:var(--r12);
+  padding:16px 18px;position:relative;overflow:hidden;
+  animation:pgIn .4s ease both;transition:transform .25s,box-shadow .25s;
+}
+.want-card:hover{transform:translateY(-3px);box-shadow:var(--sh1)}
+.want-card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--kin),var(--mori))}
+.want-title{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:var(--sumi);letter-spacing:.05em;margin-bottom:5px}
+.want-desc{font-size:12px;color:var(--sumi3);line-height:1.9;letter-spacing:.04em;margin-bottom:10px}
+.want-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+
+/* ══ MATCH CARD ══ */
+.match-card{background:var(--wa2);border:1px solid rgba(58,90,42,.2);border-radius:var(--r12);padding:18px 20px;margin-bottom:12px;animation:pgIn .35s ease both}
+.match-status{display:inline-flex;align-items:center;gap:5px;font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:.14em;padding:3px 10px;border-radius:var(--r99)}
+.ms-pending{background:var(--kin-pale);color:var(--kin);border:1px solid rgba(184,134,11,.25)}
+.ms-accepted{background:var(--mori-pale);color:var(--mori);border:1px solid rgba(58,90,42,.25)}
+.ms-declined{background:var(--shu-pale);color:var(--shu);border:1px solid rgba(192,57,43,.2)}
+.match-item-title{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--sumi);letter-spacing:.05em;margin:8px 0 4px}
+.match-other{font-size:12px;color:var(--sumi3);letter-spacing:.07em}
+
+/* ══ MODAL ══ */
+.overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(30,24,16,.72);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+.modal{background:var(--wa2);border-radius:var(--r12);width:100%;max-width:540px;max-height:92vh;overflow-y:auto;box-shadow:var(--sh3);animation:pgIn .3s ease both}
+.modal::before{content:"";display:block;height:4px;background:linear-gradient(90deg,var(--shu),var(--kin),var(--mori))}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(58,90,42,.15);position:sticky;top:0;background:var(--wa2);z-index:1}
+.modal-title{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--sumi);letter-spacing:.06em}
+.modal-close{font-size:22px;color:var(--sumi3);cursor:pointer;padding:4px 8px;border-radius:var(--r4);transition:var(--t)}
+.modal-close:hover{background:var(--shu-pale);color:var(--shu)}
+.modal-body{padding:20px}
+.modal-foot{padding:14px 20px;border-top:1px solid rgba(58,90,42,.12);display:flex;justify-content:flex-end;gap:10px}
+
+/* ══ ITEM DETAIL MODAL ══ */
+.detail-img{height:240px;background:var(--wa3);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:80px;border-radius:var(--r8);margin-bottom:16px}
+.detail-img img{width:100%;height:100%;object-fit:cover}
+
+/* ══ MESSAGES ══ */
+.msg-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;max-height:320px;overflow-y:auto;padding:4px}
+.msg-item{display:flex;gap:8px;animation:pgIn .25s ease both}
+.msg-item.mine{flex-direction:row-reverse}
+.msg-bubble{max-width:76%;padding:9px 13px;border-radius:var(--r8);font-size:13px;line-height:1.8;letter-spacing:.04em}
+.msg-item:not(.mine) .msg-bubble{background:var(--wa);border:1px solid rgba(58,90,42,.15);border-radius:0 var(--r8) var(--r8) var(--r8)}
+.msg-item.mine .msg-bubble{background:var(--mori);color:#fff;border-radius:var(--r8) 0 var(--r8) var(--r8)}
+.msg-meta{font-size:10px;color:var(--sumi3);margin-top:3px;text-align:center}
+.msg-input-row{display:flex;gap:8px}
+.msg-input{flex:1;background:var(--wa);border:1px solid rgba(58,90,42,.25);border-radius:var(--r8);padding:9px 13px;font-size:13px;outline:none;resize:none;min-height:44px;transition:border-color .22s}
+.msg-input:focus{border-color:var(--mori)}
+
+/* ══ PROFILE ══ */
+.profile-cover{height:140px;background:linear-gradient(135deg,rgba(58,90,42,.25),rgba(184,134,11,.2));border-radius:var(--r12) var(--r12) 0 0;position:relative}
+.profile-avatar{width:80px;height:80px;border-radius:50%;border:4px solid var(--wa);background:var(--wa3);display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden;position:absolute;bottom:-40px;left:20px;box-shadow:var(--sh2)}
+.profile-avatar img{width:100%;height:100%;object-fit:cover}
+.profile-info{padding:50px 20px 20px;background:var(--wa2);border-radius:0 0 var(--r12) var(--r12);border:1px solid rgba(192,57,43,.12);border-top:none;margin-bottom:24px}
+.profile-name{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:800;color:var(--sumi);letter-spacing:.06em;margin-bottom:2px}
+.profile-area{font-size:12px;color:var(--sumi3);letter-spacing:.08em;margin-bottom:8px}
+.profile-bio{font-size:13px;color:var(--sumi2);line-height:2;letter-spacing:.05em;margin-bottom:14px}
+.profile-stats{display:flex;gap:20px}
+.pstat-num{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--shu);display:block}
+.pstat-label{font-size:11px;color:var(--sumi3);letter-spacing:.1em}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--sumi);color:var(--wa);font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.1em;padding:10px 24px;border-radius:var(--r99);opacity:0;pointer-events:none;z-index:800;transition:all .4s;white-space:nowrap;box-shadow:var(--sh2)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ══ STATS WIDGET ══ */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat-box{background:var(--wa2);border:1px solid rgba(192,57,43,.12);border-radius:var(--r8);padding:16px;text-align:center;position:relative;overflow:hidden}
+.stat-box::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px}
+.stat-box:nth-child(1)::before{background:var(--shu)}
+.stat-box:nth-child(2)::before{background:var(--kin)}
+.stat-box:nth-child(3)::before{background:var(--mori)}
+.stat-box:nth-child(4)::before{background:var(--sumi3)}
+.stat-num{font-family:'Shippori Mincho',serif;font-size:28px;font-weight:800;color:var(--sumi);display:block;line-height:1}
+.stat-label{font-size:11px;color:var(--sumi3);letter-spacing:.12em;margin-top:4px}
+
+/* ══ EMPTY / LOADING ══ */
+.empty{text-align:center;padding:52px 20px;color:var(--sumi3);font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.12em;line-height:2.5}
+.empty .ei{font-size:48px;display:block;margin-bottom:12px;opacity:.4}
+.spinner{display:inline-block;width:22px;height:22px;border:2px solid rgba(58,90,42,.18);border-top-color:var(--mori);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading{text-align:center;padding:48px;color:var(--sumi3);font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.14em}
+
+/* ══ TABS ══ */
+.tabs{display:flex;border-bottom:2px solid var(--wa3);margin-bottom:20px}
+.tab{font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.12em;padding:10px 20px;color:var(--sumi3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:var(--t)}
+.tab:hover{color:var(--shu)}
+.tab.on{color:var(--shu);border-bottom-color:var(--shu);font-weight:700}
+
+/* ══ NOTIFICATION DOT ══ */
+.notif-dot{display:inline-block;width:8px;height:8px;background:var(--shu);border-radius:50%;margin-left:4px;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:768px){
+  #topbar{padding:8px 12px}
+  .brand-sub{display:none}
+  #app{padding:16px 12px 72px}
+  .stats-strip{grid-template-columns:repeat(2,1fr)}
+  .card-grid{grid-template-columns:1fr 1fr}
+  .auth-box{padding:32px 20px}
+  .topbar-nav .tnav-btn span{display:none}
+  .tnav-btn{padding:8px 10px;font-size:16px}
+}
+@media(max-width:480px){
+  .card-grid{grid-template-columns:1fr}
+  .stats-strip{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="page-border"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ══════════ TOPBAR ══════════ -->
+<div id="topbar" style="display:none">
+  <div class="brand">
+    🏮
+    <div>
+      <div>交換の市</div>
+      <div class="brand-sub">日本ダーチャ協会</div>
+    </div>
+  </div>
+  <div class="topbar-nav">
+    <button class="tnav-btn" data-page="market" onclick="nav('market')"><span>🏪</span> <span>市場</span></button>
+    <button class="tnav-btn" data-page="wants" onclick="nav('wants')"><span>🙏</span> <span>欲しい</span></button>
+    <button class="tnav-btn" data-page="matches" onclick="nav('matches')">
+      <span>🤝</span> <span>交換</span><span id="notif-dot" style="display:none" class="notif-dot"></span>
+    </button>
+    <button class="tnav-btn" data-page="profile" onclick="nav('profile')"><span>🌿</span> <span>プロフィール</span></button>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="user-chip">🌱 <span id="top-name">—</span></div>
+    <button class="btn btn-ghost btn-sm" onclick="logout()">退出</button>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app">
+
+  <!-- ── AUTH ── -->
+  <div id="pg-auth" class="page active">
+    <div class="auth-wrap">
+      <div class="auth-box">
+        <span class="auth-mark">🏮</span>
+        <div class="auth-title">交換の市</div>
+        <div class="auth-sub">日本ダーチャ協会 会員専用</div>
+        <div class="auth-tabs">
+          <div class="auth-tab on" onclick="authTab('login')">ログイン</div>
+          <div class="auth-tab" onclick="authTab('register')">新規登録</div>
+        </div>
+
+        <!-- ログイン -->
+        <div id="auth-login">
+          <div class="field"><label>メールアドレス</label><input type="email" id="l-email" placeholder="your@email.com"></div>
+          <div class="field"><label>パスワード</label><input type="password" id="l-pw" placeholder="••••••••"></div>
+          <div class="ferr" id="l-err"></div>
+          <button class="btn btn-primary" style="width:100%;margin-top:4px" id="btn-login" onclick="doLogin()">ログインする</button>
+          <div class="demo-hint">🏮 <strong>デモモード</strong>（GAS未設定）<br>メール: <code>demo@dacha.jp</code> / PW: <code>demo1234</code></div>
+        </div>
+
+        <!-- 新規登録 -->
+        <div id="auth-register" style="display:none">
+          <div class="field"><label>お名前</label><input type="text" id="r-name" placeholder="例：田中太郎" maxlength="20"></div>
+          <div class="field"><label>メールアドレス</label><input type="email" id="r-email" placeholder="your@email.com"></div>
+          <div class="field"><label>パスワード（8文字以上）</label><input type="password" id="r-pw" placeholder="••••••••"></div>
+          <div class="field"><label>パスワード（確認）</label><input type="password" id="r-pw2"></div>
+          <div class="field"><label>居住地域</label><input type="text" id="r-area" placeholder="例：福岡県" maxlength="20"></div>
+          <div class="field"><label>招待コード</label><input type="text" id="r-code" placeholder="管理者より受け取ったコード"></div>
+          <div class="ferr" id="r-err"></div>
+          <button class="btn btn-primary" style="width:100%;margin-top:4px" id="btn-reg" onclick="doRegister()">登録してはじめる</button>
+          <p style="font-size:11px;color:var(--sumi3);text-align:center;letter-spacing:.08em;margin-top:16px;line-height:2">招待コードはLINEオープンチャット管理者より<br>お受け取りください。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 市場（出品一覧） ── -->
+  <div id="pg-market" class="page">
+    <div class="sec-head">
+      <div class="sec-title">市場 — 出品中のもの</div>
+      <button class="btn btn-primary btn-sm" onclick="openAddItem()">＋ 出品する</button>
+    </div>
+
+    <div id="market-stats" class="stats-strip"></div>
+
+    <div class="filter-bar">
+      <span class="filter-label">絞り込み：</span>
+      <button class="fbtn on" data-cat="all" onclick="setCat('items','all',this)">すべて</button>
+      <button class="fbtn" data-cat="野菜・果物" onclick="setCat('items','野菜・果物',this)">🥬 野菜・果物</button>
+      <button class="fbtn" data-cat="保存食・加工品" onclick="setCat('items','保存食・加工品',this)">🫙 保存食</button>
+      <button class="fbtn" data-cat="苗・種" onclick="setCat('items','苗・種',this)">🌱 苗・種</button>
+      <button class="fbtn" data-cat="手工芸品" onclick="setCat('items','手工芸品',this)">🧶 手工芸</button>
+      <button class="fbtn" data-cat="農具・道具" onclick="setCat('items','農具・道具',this)">🔧 農具</button>
+      <button class="fbtn" data-cat="その他" onclick="setCat('items','その他',this)">📦 その他</button>
+      <input class="search-box" type="text" placeholder="🔍 キーワード検索…" oninput="onSearch('items',this.value)">
+    </div>
+
+    <div id="items-grid" class="card-grid"></div>
+  </div>
+
+  <!-- ── 欲しいものリスト ── -->
+  <div id="pg-wants" class="page">
+    <div class="sec-head">
+      <div class="sec-title">欲しいものリスト</div>
+      <button class="btn btn-mori btn-sm" onclick="openAddWant()">＋ 欲しいものを登録</button>
+    </div>
+    <div class="filter-bar">
+      <span class="filter-label">絞り込み：</span>
+      <button class="fbtn on" data-cat="all" onclick="setCat('wants','all',this)">すべて</button>
+      <button class="fbtn" data-cat="野菜・果物" onclick="setCat('wants','野菜・果物',this)">🥬 野菜・果物</button>
+      <button class="fbtn" data-cat="保存食・加工品" onclick="setCat('wants','保存食・加工品',this)">🫙 保存食</button>
+      <button class="fbtn" data-cat="苗・種" onclick="setCat('wants','苗・種',this)">🌱 苗・種</button>
+      <button class="fbtn" data-cat="手工芸品" onclick="setCat('wants','手工芸品',this)">🧶 手工芸</button>
+      <button class="fbtn" data-cat="農具・道具" onclick="setCat('wants','農具・道具',this)">🔧 農具</button>
+      <button class="fbtn" data-cat="その他" onclick="setCat('wants','その他',this)">📦 その他</button>
+      <input class="search-box" type="text" placeholder="🔍 キーワード検索…" oninput="onSearch('wants',this.value)">
+    </div>
+    <div id="wants-grid" class="card-grid"></div>
+  </div>
+
+  <!-- ── 交換履歴 ── -->
+  <div id="pg-matches" class="page">
+    <div class="sec-head"><div class="sec-title">交換リクエスト</div></div>
+    <div class="tabs">
+      <div class="tab on" onclick="matchTab('all',this)">すべて</div>
+      <div class="tab" onclick="matchTab('pending',this)">⏳ 承認待ち</div>
+      <div class="tab" onclick="matchTab('accepted',this)">✅ 成立</div>
+      <div class="tab" onclick="matchTab('declined',this)">❌ 不成立</div>
+    </div>
+    <div id="matches-list"></div>
+  </div>
+
+  <!-- ── プロフィール ── -->
+  <div id="pg-profile" class="page">
+    <div id="profile-content"></div>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- ══════════ MODALS ══════════ -->
+
+<!-- 出品追加 -->
+<div class="overlay" id="modal-add-item" onclick="closeModal('modal-add-item',event)">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">📦 出品する</div><span class="modal-close" onclick="closeModalById('modal-add-item')">✕</span></div>
+    <div class="modal-body">
+      <div class="field"><label>タイトル *</label><input id="ai-title" placeholder="例：今年採れたての梅 2kg" maxlength="60"></div>
+      <div class="field"><label>説明</label><textarea id="ai-desc" placeholder="状態・量・交換希望のもの・受け渡し方法など…" rows="3"></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label>カテゴリ</label>
+          <select id="ai-cat">
+            <option>野菜・果物</option><option>保存食・加工品</option><option>苗・種</option>
+            <option>手工芸品</option><option>農具・道具</option><option>その他</option>
+          </select>
+        </div>
+        <div class="field"><label>状態</label>
+          <select id="ai-cond">
+            <option>新鮮・良好</option><option>普通</option><option>傷あり</option><option>未使用</option><option>中古</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>画像（任意・2MB以下）</label>
+        <label style="display:flex;align-items:center;justify-content:center;gap:8px;border:2px dashed rgba(58,90,42,.3);border-radius:8px;padding:18px;cursor:pointer;font-family:'Shippori Mincho',serif;font-size:12px;color:var(--mori2);letter-spacing:.1em;transition:var(--t)" onmouseover="this.style.background='var(--mori-pale)'" onmouseout="this.style.background=''">
+          📷 クリックで画像を追加<input type="file" id="ai-img" accept="image/*" style="display:none" onchange="previewImg('ai-img','ai-img-preview')">
+        </label>
+        <div id="ai-img-preview" style="display:none;margin-top:8px;position:relative;width:fit-content">
+          <img id="ai-img-preview-img" style="max-height:150px;border-radius:8px;border:1px solid rgba(58,90,42,.2)">
+          <button style="position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:var(--shu);color:#fff;font-size:12px" onclick="clearImg('ai-img','ai-img-preview')">✕</button>
+        </div>
+      </div>
+      <div class="ferr" id="ai-err"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost btn-sm" onclick="closeModalById('modal-add-item')">キャンセル</button>
+      <button class="btn btn-primary btn-sm" id="btn-ai-submit" onclick="submitItem()">🏮 出品する</button>
+    </div>
+  </div>
+</div>
+
+<!-- 欲しいもの追加 -->
+<div class="overlay" id="modal-add-want" onclick="closeModal('modal-add-want',event)">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">🙏 欲しいものを登録</div><span class="modal-close" onclick="closeModalById('modal-add-want')">✕</span></div>
+    <div class="modal-body">
+      <div class="field"><label>欲しいもの *</label><input id="aw-title" placeholder="例：大根（間引き菜も可）" maxlength="60"></div>
+      <div class="field"><label>詳細・希望</label><textarea id="aw-desc" placeholder="量・時期・提供できるものなど…" rows="3"></textarea></div>
+      <div class="field"><label>カテゴリ</label>
+        <select id="aw-cat">
+          <option>野菜・果物</option><option>保存食・加工品</option><option>苗・種</option>
+          <option>手工芸品</option><option>農具・道具</option><option>その他</option>
+        </select>
+      </div>
+      <div class="ferr" id="aw-err"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost btn-sm" onclick="closeModalById('modal-add-want')">キャンセル</button>
+      <button class="btn btn-mori btn-sm" id="btn-aw-submit" onclick="submitWant()">🙏 登録する</button>
+    </div>
+  </div>
+</div>
+
+<!-- 出品詳細 -->
+<div class="overlay" id="modal-item-detail" onclick="closeModal('modal-item-detail',event)">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-head"><div class="modal-title" id="detail-title">—</div><span class="modal-close" onclick="closeModalById('modal-item-detail')">✕</span></div>
+    <div class="modal-body" id="detail-body"></div>
+    <div class="modal-foot" id="detail-foot"></div>
+  </div>
+</div>
+
+<!-- メッセージ -->
+<div class="overlay" id="modal-messages" onclick="closeModal('modal-messages',event)">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-head"><div class="modal-title" id="msg-modal-title">メッセージ</div><span class="modal-close" onclick="closeModalById('modal-messages')">✕</span></div>
+    <div class="modal-body">
+      <div class="msg-list" id="msg-list"></div>
+      <div class="msg-input-row">
+        <textarea class="msg-input" id="msg-input" placeholder="メッセージを入力…" rows="2"></textarea>
+        <button class="btn btn-primary btn-sm" onclick="sendMsg()">送信</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- プロフィール編集 -->
+<div class="overlay" id="modal-edit-profile" onclick="closeModal('modal-edit-profile',event)">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head"><div class="modal-title">プロフィールを編集</div><span class="modal-close" onclick="closeModalById('modal-edit-profile')">✕</span></div>
+    <div class="modal-body">
+      <div class="field"><label>お名前</label><input id="ep-name" maxlength="20"></div>
+      <div class="field"><label>居住地域</label><input id="ep-area" maxlength="20" placeholder="例：福岡県"></div>
+      <div class="field"><label>自己紹介</label><textarea id="ep-bio" rows="3" maxlength="160" placeholder="農作業への想い、得意なものなど…"></textarea></div>
+      <div class="ferr" id="ep-err"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost btn-sm" onclick="closeModalById('modal-edit-profile')">キャンセル</button>
+      <button class="btn btn-primary btn-sm" onclick="saveProfile()">保存する</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SCRIPT ══════════ -->
+<script>
+/* ════════════════════════════════════════════════
+   CONFIG
+════════════════════════════════════════════════ */
+const GAS_URL     = 'YOUR_GAS_WEB_APP_URL_HERE';
+const INVITE_CODE = 'dacha2026'; // GAS側と一致させる
+const IS_DEMO     = GAS_URL === 'YOUR_GAS_WEB_APP_URL_HERE';
+
+/* ════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════ */
+let ME = null;
+let currentItemCat  = 'all';
+let currentWantCat  = 'all';
+let currentMatchTab = 'all';
+let itemsCache      = [];
+let wantsCache      = [];
+let activeMatchId   = null;
+let imgB64_item     = null;
+
+/* ════════════════════════════════════════════════
+   DEMO DATA
+════════════════════════════════════════════════ */
+const DEMO = (() => {
+  const members = [
+    { id:'m1', email:'demo@dacha.jp',  pw:'demo1234', name:'田中たろう',   area:'福岡県',  bio:'自然農法歴5年。梅と野菜が得意です🌿', avatar:'', role:'member' },
+    { id:'m2', email:'admin@dacha.jp', pw:'admin1234', name:'佐藤はなこ',  area:'熊本県',  bio:'保存食づくりが趣味です🫙', avatar:'', role:'admin' },
+    { id:'m3', email:'demo3@dacha.jp', pw:'demo1234',  name:'鈴木じろう', area:'長崎県',  bio:'農具のDIYが得意です🔧', avatar:'', role:'member' },
+  ];
+  let items = [
+    { id:'item1', memberId:'m2', memberName:'佐藤はなこ', title:'手づくり梅干し（南高梅・2kg）', desc:'今年仕込みの梅干しです。塩分18%。野菜や苗との交換希望🙏', category:'保存食・加工品', condition:'新鮮・良好', image:'', status:'available', createdAt:'2026-03-01T09:00:00Z' },
+    { id:'item2', memberId:'m1', memberName:'田中たろう', title:'ミニトマト苗 5株（接木なし）', desc:'無農薬栽培。品種はアイコとサンチェリー。ポット入り。', category:'苗・種', condition:'新鮮・良好', image:'', status:'available', createdAt:'2026-03-02T10:00:00Z' },
+    { id:'item3', memberId:'m3', memberName:'鈴木じろう', title:'手づくり竹製棚 小', desc:'竹で作った小さな棚です。高さ60cm。保存食の棚に最適。', category:'手工芸品', condition:'新鮮・良好', image:'', status:'available', createdAt:'2026-03-03T08:00:00Z' },
+    { id:'item4', memberId:'m1', memberName:'田中たろう', title:'大葉・バジル セット', desc:'各10株ほど。自家採種のタネから育てました。', category:'野菜・果物', condition:'新鮮・良好', image:'', status:'available', createdAt:'2026-03-04T07:00:00Z' },
+  ];
+  let wants = [
+    { id:'want1', memberId:'m1', memberName:'田中たろう', title:'大根（間引き菜も可）', desc:'お味噌汁や漬物用。量は問いません。', category:'野菜・果物', createdAt:'2026-03-01T11:00:00Z' },
+    { id:'want2', memberId:'m3', memberName:'鈴木じろう', title:'梅の実（生梅）', desc:'梅酒と梅干し用。2〜3kg希望。', category:'野菜・果物', createdAt:'2026-03-02T12:00:00Z' },
+    { id:'want3', memberId:'m2', memberName:'佐藤はなこ', title:'ハーブ類（バジル・タイム等）', desc:'料理用。苗でも種でも。', category:'苗・種', createdAt:'2026-03-03T09:30:00Z' },
+  ];
+  let matches = [
+    { id:'match1', itemId:'item1', wantId:'', itemOwnerId:'m2', wantOwnerId:'m1', status:'accepted', createdAt:'2026-03-02T15:00:00Z', item:{ id:'item1', title:'手づくり梅干し（南高梅・2kg）', category:'保存食・加工品', image:'' }, otherName:'田中たろう', isOwner:false },
+  ];
+  let messages = [
+    { id:'msg1', matchId:'match1', senderId:'m1', senderName:'田中たろう', body:'梅干しとミニトマト苗を交換していただけますか？', createdAt:'2026-03-02T15:30:00Z' },
+    { id:'msg2', matchId:'match1', senderId:'m2', senderName:'佐藤はなこ', body:'ぜひ！今週末に渡せます。場所はどうしましょう？', createdAt:'2026-03-02T16:00:00Z' },
+  ];
+
+  return {
+    login(email, pw) {
+      const m = members.find(x => x.email===email && x.pw===pw);
+      if (!m) return { ok:false, error:'メールアドレスまたはパスワードが正しくありません' };
+      return { ok:true, member:{ id:m.id, name:m.name, area:m.area, bio:m.bio, avatar:m.avatar, role:m.role } };
+    },
+    register(p) {
+      if (p.inviteCode !== INVITE_CODE) return { ok:false, error:'招待コードが正しくありません' };
+      if (members.find(m=>m.email===p.email)) return { ok:false, error:'このメールは登録済みです' };
+      const m = { id:'m'+Date.now(), email:p.email, pw:p.pw, name:p.name, area:p.area||'', bio:'', avatar:'', role:'member' };
+      members.push(m);
+      return { ok:true, member:{ id:m.id, name:m.name, area:m.area, bio:m.bio, avatar:m.avatar, role:m.role } };
+    },
+    getItems(cat, q) {
+      let list = items.filter(i=>i.status!=='deleted'&&i.status!=='matched');
+      if (cat&&cat!=='all') list=list.filter(i=>i.category===cat);
+      if (q) { const lq=q.toLowerCase(); list=list.filter(i=>(i.title+i.desc).toLowerCase().includes(lq)); }
+      return { ok:true, items:[...list].reverse() };
+    },
+    addItem(p) {
+      const id='item'+Date.now();
+      items.push({ id, memberId:p.memberId, memberName:p.memberName, title:p.title, desc:p.desc||'', category:p.category||'その他', condition:p.condition||'新鮮・良好', image:p.image||'', status:'available', createdAt:new Date().toISOString() });
+      return { ok:true, id };
+    },
+    deleteItem(itemId, memberId) {
+      const i=items.find(x=>x.id===itemId&&(x.memberId===memberId||memberId==='admin'));
+      if (!i) return { ok:false, error:'見つかりません' };
+      i.status='deleted'; return { ok:true };
+    },
+    getWants(cat, q) {
+      let list=[...wants];
+      if (cat&&cat!=='all') list=list.filter(w=>w.category===cat);
+      if (q) { const lq=q.toLowerCase(); list=list.filter(w=>(w.title+w.desc).toLowerCase().includes(lq)); }
+      return { ok:true, wants:[...list].reverse() };
+    },
+    addWant(p) {
+      const id='want'+Date.now();
+      wants.push({ id, memberId:p.memberId, memberName:p.memberName, title:p.title, desc:p.desc||'', category:p.category||'その他', createdAt:new Date().toISOString() });
+      return { ok:true, id };
+    },
+    deleteWant(wantId, memberId) {
+      const i=wants.findIndex(w=>w.id===wantId&&(w.memberId===memberId||memberId==='admin'));
+      if (i===-1) return { ok:false, error:'見つかりません' };
+      wants.splice(i,1); return { ok:true };
+    },
+    requestMatch(itemId, wantOwnerId) {
+      const item=items.find(i=>i.id===itemId&&i.status==='available');
+      if (!item) return { ok:false, error:'この出品物は利用できません' };
+      if (item.memberId===wantOwnerId) return { ok:false, error:'自分の出品物には申し込めません' };
+      const ex=matches.find(m=>m.itemId===itemId&&m.wantOwnerId===wantOwnerId&&m.status==='pending');
+      if (ex) return { ok:false, error:'すでに申し込み済みです' };
+      const id='match'+Date.now();
+      const owner=members.find(m=>m.id===wantOwnerId);
+      matches.push({ id, itemId, wantId:'', itemOwnerId:item.memberId, wantOwnerId, status:'pending', createdAt:new Date().toISOString(), item:{ id:item.id, title:item.title, category:item.category, image:item.image }, otherName:owner?.name||'?', isOwner:false });
+      // 出品者側にも追加
+      const requester=members.find(m=>m.id===item.memberId);
+      matches.push({ id:id+'_owner', itemId, wantId:'', itemOwnerId:item.memberId, wantOwnerId, status:'pending', createdAt:new Date().toISOString(), item:{ id:item.id, title:item.title, category:item.category, image:item.image }, otherName:owner?.name||'?', isOwner:true, _ref:id });
+      return { ok:true, id };
+    },
+    respondMatch(matchId, memberId, accept) {
+      const m=matches.find(x=>x.id===matchId||(x._ref===matchId&&x.isOwner));
+      const realId = m?._ref || matchId;
+      matches.filter(x=>x.id===realId||x._ref===realId||x.id===realId+'_owner').forEach(x=>{ x.status=accept?'accepted':'declined'; });
+      if (accept) { const item=items.find(i=>i.id===m?.itemId); if(item) item.status='matched'; }
+      return { ok:true };
+    },
+    getMatches(memberId) {
+      const list=matches.filter(m=>m.itemOwnerId===memberId||m.wantOwnerId===memberId);
+      // 重複排除（_refがある場合はowner側を優先）
+      const seen=new Set();
+      const deduped=list.filter(m=>{ const key=(m._ref||m.id)+'_'+(m.isOwner?'owner':'want'); if(seen.has(key))return false; seen.add(key); return true; });
+      return { ok:true, matches:[...deduped].reverse() };
+    },
+    sendMessage(matchId, senderId, senderName, body) {
+      const id='msg'+Date.now();
+      messages.push({ id, matchId, senderId, senderName, body, createdAt:new Date().toISOString() });
+      return { ok:true, id };
+    },
+    getMessages(matchId) {
+      const realId=matchId.replace('_owner','');
+      return { ok:true, messages:messages.filter(m=>m.matchId===realId||m.matchId===matchId) };
+    },
+    getStats() {
+      const cat={};
+      items.filter(i=>i.status!=='deleted').forEach(i=>{ cat[i.category]=(cat[i.category]||0)+1; });
+      return { ok:true, stats:{ items:items.filter(i=>i.status!=='deleted').length, wants:wants.length, matches:matches.filter(m=>m.status==='accepted'&&!m._ref).length, members:members.length, cats:cat } };
+    },
+    updateProfile(p) {
+      const m=members.find(x=>x.id===p.memberId); if(!m) return { ok:false };
+      m.name=p.name||m.name; m.area=p.area||''; m.bio=p.bio||'';
+      return { ok:true };
+    },
+    getProfile(memberId) {
+      const m=members.find(x=>x.id===memberId);
+      if (!m) return { ok:false };
+      return { ok:true, member:{ id:m.id, name:m.name, area:m.area, bio:m.bio, avatar:m.avatar, role:m.role },
+        items:items.filter(i=>i.memberId===memberId&&i.status!=='deleted').reverse(),
+        wants:wants.filter(w=>w.memberId===memberId).reverse() };
+    },
+  };
+})();
+
+/* ════════════════════════════════════════════════
+   GAS API
+════════════════════════════════════════════════ */
+async function gasGet(action, params={}) {
+  if (IS_DEMO) return DEMO[action] ? DEMO[action](...Object.values(params)) : { ok:false };
+  const url=new URL(GAS_URL);
+  url.searchParams.set('action',action);
+  Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
+  return (await fetch(url.toString())).json();
+}
+async function gasPost(payload) {
+  if (IS_DEMO) {
+    const { action, ...rest } = payload;
+    if (action==='login')         return DEMO.login(rest.email, rest.pw);
+    if (action==='register')      return DEMO.register(rest);
+    if (action==='addItem')       return DEMO.addItem(rest);
+    if (action==='deleteItem')    return DEMO.deleteItem(rest.itemId, rest.memberId);
+    if (action==='addWant')       return DEMO.addWant(rest);
+    if (action==='deleteWant')    return DEMO.deleteWant(rest.wantId, rest.memberId);
+    if (action==='requestMatch')  return DEMO.requestMatch(rest.itemId, rest.wantOwnerId);
+    if (action==='respondMatch')  return DEMO.respondMatch(rest.matchId, rest.memberId, rest.accept);
+    if (action==='sendMessage')   return DEMO.sendMessage(rest.matchId, rest.senderId, rest.senderName, rest.body);
+    if (action==='updateProfile') return DEMO.updateProfile(rest);
+    return { ok:false };
+  }
+  return (await fetch(GAS_URL,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })).json();
+}
+
+/* ════════════════════════════════════════════════
+   UTILS
+════════════════════════════════════════════════ */
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+function timeAgo(iso){
+  const d=new Date(iso),n=new Date(),s=Math.floor((n-d)/1000);
+  if(s<60) return 'たった今';if(s<3600) return Math.floor(s/60)+'分前';
+  if(s<86400) return Math.floor(s/3600)+'時間前';if(s<86400*7) return Math.floor(s/86400)+'日前';
+  return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+}
+function toast(msg){ const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800) }
+function catEmoji(c){ return {'野菜・果物':'🥬','保存食・加工品':'🫙','苗・種':'🌱','手工芸品':'🧶','農具・道具':'🔧','その他':'📦'}[c]||'📦' }
+function avatarEl(m){ return m?.avatar?`<img src="${esc(m.avatar)}" alt="">`:'🌿' }
+
+/* ════════════════════════════════════════════════
+   AUTH
+════════════════════════════════════════════════ */
+function authTab(t){
+  document.getElementById('auth-login').style.display    = t==='login'    ?'block':'none';
+  document.getElementById('auth-register').style.display = t==='register' ?'block':'none';
+  document.querySelectorAll('.auth-tab').forEach((el,i)=>el.classList.toggle('on',(t==='login'&&i===0)||(t==='register'&&i===1)));
+}
+async function doLogin(){
+  const email=document.getElementById('l-email').value.trim();
+  const pw=document.getElementById('l-pw').value;
+  const err=document.getElementById('l-err');
+  err.textContent='';
+  if(!email||!pw){err.textContent='⚠️ 入力してください';return}
+  const btn=document.getElementById('btn-login');
+  btn.disabled=true;btn.textContent='確認中…';
+  const res=await gasPost({action:'login',email,pw});
+  if(!res.ok){err.textContent='⚠️ '+(res.error||'エラー');}
+  else{loginSuccess(res.member);}
+  btn.disabled=false;btn.textContent='ログインする';
+}
+async function doRegister(){
+  const name=document.getElementById('r-name').value.trim();
+  const email=document.getElementById('r-email').value.trim();
+  const pw=document.getElementById('r-pw').value;
+  const pw2=document.getElementById('r-pw2').value;
+  const area=document.getElementById('r-area').value.trim();
+  const code=document.getElementById('r-code').value.trim();
+  const err=document.getElementById('r-err');
+  err.textContent='';
+  if(!name){err.textContent='⚠️ お名前を入力してください';return}
+  if(!email){err.textContent='⚠️ メールを入力してください';return}
+  if(pw.length<8){err.textContent='⚠️ パスワードは8文字以上';return}
+  if(pw!==pw2){err.textContent='⚠️ パスワードが一致しません';return}
+  if(!code){err.textContent='⚠️ 招待コードを入力してください';return}
+  const btn=document.getElementById('btn-reg');btn.disabled=true;btn.textContent='登録中…';
+  const res=await gasPost({action:'register',name,email,pw,area,inviteCode:code});
+  if(!res.ok){err.textContent='⚠️ '+(res.error||'エラー');}
+  else{loginSuccess(res.member);}
+  btn.disabled=false;btn.textContent='登録してはじめる';
+}
+function loginSuccess(member){
+  ME=member;
+  sessionStorage.setItem('dacha_ex_user',JSON.stringify(member));
+  document.getElementById('top-name').textContent=member.name;
+  document.getElementById('topbar').style.display='flex';
+  nav('market');
+}
+function logout(){
+  sessionStorage.removeItem('dacha_ex_user');ME=null;
+  document.getElementById('topbar').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-auth').classList.add('active');
+  document.getElementById('app').style.paddingTop='';
+}
+
+/* ════════════════════════════════════════════════
+   NAVIGATION
+════════════════════════════════════════════════ */
+function nav(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-'+page).classList.add('active');
+  document.querySelectorAll('.tnav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+  if(page==='market')  loadMarket();
+  if(page==='wants')   loadWants();
+  if(page==='matches') loadMatches();
+  if(page==='profile') loadProfile(ME.id);
+}
+
+/* ════════════════════════════════════════════════
+   MARKET（出品一覧）
+════════════════════════════════════════════════ */
+async function loadMarket(){
+  document.getElementById('items-grid').innerHTML=`<div class="loading"><div class="spinner" style="margin:0 auto 10px"></div>読み込み中…</div>`;
+  const res=IS_DEMO ? DEMO.getItems(currentItemCat,null) : await gasGet('getItems',{category:currentItemCat});
+  itemsCache=res.items||[];
+  renderItems(itemsCache);
+  loadStats();
+}
+function renderItems(list){
+  const el=document.getElementById('items-grid');
+  if(!list.length){el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span class="ei">📦</span>出品物がありません</div>`;return}
+  el.innerHTML=list.map((item,i)=>`
+  <div class="item-card" style="animation-delay:${i*.04}s" onclick="openDetail('${esc(item.id)}')">
+    <div class="item-img">${item.image?`<img src="${esc(item.image)}" alt="">`:catEmoji(item.category)}</div>
+    <div class="item-body">
+      <span class="item-cat">${catEmoji(item.category)} ${esc(item.category)}</span>
+      <div class="item-title">${esc(item.title)}</div>
+      <div class="item-desc">${esc(item.desc||'説明なし')}</div>
+      <div class="item-footer">
+        <span class="item-owner">🌿 ${esc(item.memberName)}</span>
+        <span class="item-condition">${esc(item.condition||'良好')}</span>
+      </div>
+    </div>
+  </div>`).join('');
+}
+async function loadStats(){
+  const res=IS_DEMO ? DEMO.getStats() : await gasGet('getStats');
+  if(!res.ok) return;
+  const s=res.stats;
+  document.getElementById('market-stats').innerHTML=`
+    <div class="stat-box"><span class="stat-num">${s.items}</span><div class="stat-label">出品中</div></div>
+    <div class="stat-box"><span class="stat-num">${s.wants}</span><div class="stat-label">欲しい</div></div>
+    <div class="stat-box"><span class="stat-num">${s.matches}</span><div class="stat-label">成立した交換</div></div>
+    <div class="stat-box"><span class="stat-num">${s.members}</span><div class="stat-label">会員数</div></div>`;
+}
+
+/* ─ カテゴリフィルター ─ */
+function setCat(type, cat, el){
+  if(type==='items') currentItemCat=cat; else currentWantCat=cat;
+  el.closest('.filter-bar').querySelectorAll('.fbtn').forEach(b=>b.classList.toggle('on',b.dataset.cat===cat));
+  if(type==='items') renderItems(itemsCache.filter(i=>cat==='all'||i.category===cat));
+  else renderWants(wantsCache.filter(w=>cat==='all'||w.category===cat));
+}
+function onSearch(type, q){
+  if(type==='items'){
+    const lq=q.toLowerCase();
+    renderItems(itemsCache.filter(i=>cat==='all'||(lq?((i.title+i.desc).toLowerCase().includes(lq)):true)));
+  } else {
+    const lq=q.toLowerCase();
+    renderWants(wantsCache.filter(w=>(lq?((w.title+w.desc).toLowerCase().includes(lq)):true)));
+  }
+}
+// フィルター + 検索の組み合わせ（修正版）
+document.querySelectorAll('.search-box').forEach(inp=>{
+  inp.addEventListener('input', function(){
+    const q=this.value.toLowerCase().trim();
+    const inWants=this.closest('#pg-wants');
+    if(inWants){
+      renderWants(wantsCache.filter(w=>(currentWantCat==='all'||w.category===currentWantCat)&&(!q||((w.title+w.desc).toLowerCase().includes(q)))));
+    } else {
+      renderItems(itemsCache.filter(i=>(currentItemCat==='all'||i.category===currentItemCat)&&(!q||((i.title+i.desc).toLowerCase().includes(q)))));
+    }
+  });
+});
+
+/* ─ 出品詳細 ─ */
+function openDetail(itemId){
+  const item=itemsCache.find(i=>i.id===itemId);
+  if(!item) return;
+  document.getElementById('detail-title').textContent=item.title;
+  const isOwner=item.memberId===ME?.id;
+  document.getElementById('detail-body').innerHTML=`
+    <div class="detail-img">${item.image?`<img src="${esc(item.image)}" alt="">`:catEmoji(item.category)}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      <span class="item-cat">${catEmoji(item.category)} ${esc(item.category)}</span>
+      <span class="item-condition">${esc(item.condition||'良好')}</span>
+    </div>
+    <p style="font-size:13px;line-height:2;color:var(--sumi2);letter-spacing:.04em;margin-bottom:14px">${esc(item.desc||'説明なし')}</p>
+    <div style="font-size:12px;color:var(--sumi3);letter-spacing:.08em">🌿 ${esc(item.memberName)} ・ ${timeAgo(item.createdAt)}</div>`;
+  document.getElementById('detail-foot').innerHTML=isOwner
+    ? `<button class="btn btn-ghost btn-sm" onclick="closeModalById('modal-item-detail')">閉じる</button><button class="btn btn-sm" style="background:var(--shu);color:#fff;border:none" onclick="deleteItem('${item.id}')">🗑️ 取り下げ</button>`
+    : `<button class="btn btn-ghost btn-sm" onclick="closeModalById('modal-item-detail')">閉じる</button><button class="btn btn-primary btn-sm" onclick="applyMatch('${item.id}')">🤝 交換を申し込む</button>`;
+  document.getElementById('modal-item-detail').classList.add('open');
+}
+
+/* ─ 出品追加 ─ */
+function openAddItem(){ imgB64_item=null; document.getElementById('modal-add-item').classList.add('open'); }
+async function submitItem(){
+  const title=document.getElementById('ai-title').value.trim();
+  const err=document.getElementById('ai-err');
+  err.textContent='';
+  if(!title){err.textContent='⚠️ タイトルを入力してください';return}
+  const btn=document.getElementById('btn-ai-submit');btn.disabled=true;btn.textContent='出品中…';
+  const res=await gasPost({action:'addItem',memberId:ME.id,memberName:ME.name,title,desc:document.getElementById('ai-desc').value.trim(),category:document.getElementById('ai-cat').value,condition:document.getElementById('ai-cond').value,image:imgB64_item||''});
+  if(res.ok){closeModalById('modal-add-item');document.getElementById('ai-title').value='';document.getElementById('ai-desc').value='';imgB64_item=null;document.getElementById('ai-img-preview').style.display='none';toast('🏮 出品しました！');loadMarket();}
+  else err.textContent='⚠️ '+(res.error||'エラー');
+  btn.disabled=false;btn.textContent='🏮 出品する';
+}
+async function deleteItem(itemId){
+  if(!confirm('この出品物を取り下げますか？')) return;
+  closeModalById('modal-item-detail');
+  await gasPost({action:'deleteItem',itemId,memberId:ME.id});
+  toast('🗑️ 取り下げました');loadMarket();
+}
+
+/* ─ 交換申し込み ─ */
+async function applyMatch(itemId){
+  closeModalById('modal-item-detail');
+  const res=await gasPost({action:'requestMatch',itemId,wantOwnerId:ME.id});
+  if(res.ok){toast('🤝 交換を申し込みました！マッチングを確認してください');nav('matches');}
+  else toast('⚠️ '+(res.error||'エラー'));
+}
+
+/* ════════════════════════════════════════════════
+   WANTS（欲しいもの）
+════════════════════════════════════════════════ */
+async function loadWants(){
+  document.getElementById('wants-grid').innerHTML=`<div class="loading"><div class="spinner" style="margin:0 auto 10px"></div>読み込み中…</div>`;
+  const res=IS_DEMO ? DEMO.getWants(currentWantCat,null) : await gasGet('getWants',{category:currentWantCat});
+  wantsCache=res.wants||[];
+  renderWants(wantsCache);
+}
+function renderWants(list){
+  const el=document.getElementById('wants-grid');
+  if(!list.length){el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span class="ei">🙏</span>欲しいものがありません</div>`;return}
+  el.innerHTML=list.map((w,i)=>`
+  <div class="want-card" style="animation-delay:${i*.04}s">
+    <span class="item-cat" style="background:var(--kin-pale);color:var(--kin);border-color:rgba(184,134,11,.2)">${catEmoji(w.category)} ${esc(w.category)}</span>
+    <div class="want-title">${esc(w.title)}</div>
+    <div class="want-desc">${esc(w.desc||'')}</div>
+    <div class="want-footer">
+      <span style="font-size:11px;color:var(--mori2)">🌿 ${esc(w.memberName)}</span>
+      <span style="font-size:10px;color:var(--sumi3)">${timeAgo(w.createdAt)}</span>
+      ${w.memberId===ME?.id?`<button class="btn btn-xs" style="background:var(--shu-pale);color:var(--shu);border:1px solid rgba(192,57,43,.2)" onclick="deleteWant('${w.id}')">削除</button>`:''}
+    </div>
+  </div>`).join('');
+}
+function openAddWant(){ document.getElementById('modal-add-want').classList.add('open'); }
+async function submitWant(){
+  const title=document.getElementById('aw-title').value.trim();
+  const err=document.getElementById('aw-err');err.textContent='';
+  if(!title){err.textContent='⚠️ タイトルを入力してください';return}
+  const btn=document.getElementById('btn-aw-submit');btn.disabled=true;btn.textContent='登録中…';
+  const res=await gasPost({action:'addWant',memberId:ME.id,memberName:ME.name,title,desc:document.getElementById('aw-desc').value.trim(),category:document.getElementById('aw-cat').value});
+  if(res.ok){closeModalById('modal-add-want');document.getElementById('aw-title').value='';document.getElementById('aw-desc').value='';toast('🙏 登録しました！');loadWants();}
+  else err.textContent='⚠️ '+(res.error||'エラー');
+  btn.disabled=false;btn.textContent='🙏 登録する';
+}
+async function deleteWant(wantId){
+  if(!confirm('この欲しいものを削除しますか？')) return;
+  await gasPost({action:'deleteWant',wantId,memberId:ME.id});
+  toast('🗑️ 削除しました');loadWants();
+}
+
+/* ════════════════════════════════════════════════
+   MATCHES（交換管理）
+════════════════════════════════════════════════ */
+async function loadMatches(){
+  document.getElementById('matches-list').innerHTML=`<div class="loading"><div class="spinner" style="margin:0 auto 10px"></div>読み込み中…</div>`;
+  const res=IS_DEMO ? DEMO.getMatches(ME.id) : await gasGet('getMatches',{memberId:ME.id});
+  renderMatches(res.matches||[],currentMatchTab);
+  // 承認待ち件数
+  const pending=(res.matches||[]).filter(m=>m.status==='pending').length;
+  document.getElementById('notif-dot').style.display=pending?'inline-block':'none';
+}
+function matchTab(tab,el){
+  currentMatchTab=tab;
+  document.querySelectorAll('#pg-matches .tab').forEach(t=>t.classList.toggle('on',t===el));
+  loadMatches();
+}
+function renderMatches(list,tab){
+  const filtered=tab==='all'?list:list.filter(m=>m.status===tab);
+  const el=document.getElementById('matches-list');
+  if(!filtered.length){el.innerHTML=`<div class="empty"><span class="ei">🤝</span>交換リクエストはありません</div>`;return}
+  el.innerHTML=filtered.map(m=>{
+    const statusClass={'pending':'ms-pending','accepted':'ms-accepted','declined':'ms-declined'}[m.status]||'';
+    const statusLabel={'pending':'承認待ち','accepted':'✅ 成立','declined':'❌ 不成立'}[m.status]||m.status;
+    const isOwner=m.isOwner||m.itemOwnerId===ME.id;
+    const ownerActions=isOwner&&m.status==='pending'?`
+      <button class="btn btn-mori btn-sm" onclick="respond('${m.id}',true)">✅ 承認する</button>
+      <button class="btn btn-ghost btn-sm" onclick="respond('${m.id}',false)">❌ 断る</button>`:
+      (m.status==='accepted'?`<button class="btn btn-primary btn-sm" onclick="openMessages('${m.id}','${esc(m.otherName||'')}')">💬 メッセージ</button>`:'');
+    const wantActions=!isOwner&&m.status==='accepted'?`<button class="btn btn-primary btn-sm" onclick="openMessages('${m.id}','${esc(m.otherName||'')}')">💬 メッセージ</button>`:'';
+    return `
+    <div class="match-card">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="match-status ${statusClass}">${statusLabel}</span>
+        <span style="font-size:11px;color:var(--sumi3)">${isOwner?'申し込まれた':'申し込んだ'}</span>
+        <span style="font-size:11px;color:var(--sumi3);margin-left:auto">${timeAgo(m.createdAt)}</span>
+      </div>
+      <div class="match-item-title">${catEmoji(m.item?.category||'')} ${esc(m.item?.title||'—')}</div>
+      <div class="match-other">相手: 🌿 ${esc(m.otherName||'?')}</div>
+      ${isOwner&&m.status==='pending'?`<div style="font-size:12px;color:var(--kin);margin-top:6px;letter-spacing:.07em">⏳ ${esc(m.otherName)}さんが交換を申し込んでいます</div>`:''}
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">${ownerActions}${wantActions}</div>
+    </div>`;
+  }).join('');
+}
+async function respond(matchId,accept){
+  const res=await gasPost({action:'respondMatch',matchId,memberId:ME.id,accept});
+  if(res.ok){toast(accept?'✅ 承認しました。メッセージで連絡してみましょう！':'❌ 断りました');loadMatches();}
+  else toast('⚠️ '+(res.error||'エラー'));
+}
+
+/* ════════════════════════════════════════════════
+   MESSAGES
+════════════════════════════════════════════════ */
+async function openMessages(matchId,otherName){
+  activeMatchId=matchId;
+  document.getElementById('msg-modal-title').textContent=`💬 ${otherName}さんとのメッセージ`;
+  document.getElementById('msg-input').value='';
+  document.getElementById('modal-messages').classList.add('open');
+  await fetchMessages();
+}
+async function fetchMessages(){
+  if(!activeMatchId) return;
+  const res=IS_DEMO ? DEMO.getMessages(activeMatchId) : await gasGet('getMessages',{matchId:activeMatchId,requesterId:ME.id});
+  const msgs=res.messages||[];
+  document.getElementById('msg-list').innerHTML=msgs.length
+    ? msgs.map(m=>{
+        const mine=m.senderId===ME.id;
+        return `<div class="msg-item${mine?' mine':''}">
+          <div>
+            <div class="msg-bubble">${esc(m.body)}</div>
+            <div class="msg-meta">${mine?'':esc(m.senderName)+' · '}${timeAgo(m.createdAt)}</div>
+          </div>
+        </div>`;
+      }).join('')
+    : '<div style="text-align:center;font-size:12px;color:var(--sumi3);padding:20px;letter-spacing:.08em">最初のメッセージを送りましょう 🌿</div>';
+  const list=document.getElementById('msg-list');
+  list.scrollTop=list.scrollHeight;
+}
+async function sendMsg(){
+  const inp=document.getElementById('msg-input');
+  const body=inp.value.trim();
+  if(!body) return;
+  const res=await gasPost({action:'sendMessage',matchId:activeMatchId,senderId:ME.id,senderName:ME.name,body});
+  if(res.ok){inp.value='';await fetchMessages();}
+  else toast('⚠️ '+(res.error||'エラー'));
+}
+document.getElementById('msg-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+
+/* ════════════════════════════════════════════════
+   PROFILE
+════════════════════════════════════════════════ */
+async function loadProfile(memberId){
+  document.getElementById('profile-content').innerHTML=`<div class="loading"><div class="spinner" style="margin:0 auto 10px"></div>読み込み中…</div>`;
+  const res=IS_DEMO ? DEMO.getProfile(memberId) : await gasGet('getProfile',{memberId});
+  if(!res.ok){document.getElementById('profile-content').innerHTML='<div class="empty">見つかりません</div>';return}
+  const { member, items, wants } = res;
+  const isMe=memberId===ME?.id;
+  const totalLikes=0; // いいね機能は将来拡張
+  document.getElementById('profile-content').innerHTML=`
+    <div class="profile-cover">
+      <div class="profile-avatar">${member.avatar?`<img src="${esc(member.avatar)}" alt="">`:avatarEl(member)}</div>
+    </div>
+    <div class="profile-info">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+        ${isMe?`<button class="btn btn-ghost btn-sm" onclick="openEditProfile()">編集</button>`:''}
+      </div>
+      <div class="profile-name">${esc(member.name)}</div>
+      ${member.area?`<div class="profile-area">📍 ${esc(member.area)}</div>`:''}
+      ${member.bio?`<div class="profile-bio">${esc(member.bio)}</div>`:''}
+      <div class="profile-stats">
+        <div><span class="pstat-num">${items.length}</span><div class="pstat-label">出品</div></div>
+        <div><span class="pstat-num">${wants.length}</span><div class="pstat-label">欲しい</div></div>
+      </div>
+    </div>
+    <div class="tabs" style="margin-top:8px">
+      <div class="tab on" onclick="profileTab('items',this)" id="pt-items">出品 (${items.length})</div>
+      <div class="tab" onclick="profileTab('wants',this)" id="pt-wants">欲しい (${wants.length})</div>
+    </div>
+    <div id="profile-items" class="card-grid">
+      ${items.length?items.map(item=>`
+        <div class="item-card">
+          <div class="item-img" style="height:130px">${item.image?`<img src="${esc(item.image)}" alt="">`:catEmoji(item.category)}</div>
+          <div class="item-body" style="padding:10px 12px">
+            <span class="item-cat">${catEmoji(item.category)} ${esc(item.category)}</span>
+            <div class="item-title" style="font-size:13px">${esc(item.title)}</div>
+            ${isMe?`<button class="btn btn-xs" style="margin-top:8px;background:var(--shu-pale);color:var(--shu);border:1px solid rgba(192,57,43,.2)" onclick="deleteItem('${item.id}')">取り下げ</button>`:''}
+          </div>
+        </div>`).join('')
+        :`<div class="empty" style="grid-column:1/-1"><span class="ei">📦</span>出品物なし</div>`}
+    </div>
+    <div id="profile-wants" class="card-grid" style="display:none">
+      ${wants.length?wants.map(w=>`
+        <div class="want-card">
+          <span class="item-cat" style="background:var(--kin-pale);color:var(--kin);border-color:rgba(184,134,11,.2)">${catEmoji(w.category)} ${esc(w.category)}</span>
+          <div class="want-title">${esc(w.title)}</div>
+          <div class="want-desc">${esc(w.desc||'')}</div>
+          ${isMe?`<button class="btn btn-xs" style="margin-top:8px;background:var(--shu-pale);color:var(--shu);border:1px solid rgba(192,57,43,.2)" onclick="deleteWant('${w.id}')">削除</button>`:''}
+        </div>`).join('')
+        :`<div class="empty" style="grid-column:1/-1"><span class="ei">🙏</span>欲しいものなし</div>`}
+    </div>`;
+}
+function profileTab(tab,el){
+  document.querySelectorAll('#profile-content .tab').forEach(t=>t.classList.toggle('on',t===el));
+  document.getElementById('profile-items').style.display=tab==='items'?'grid':'none';
+  document.getElementById('profile-wants').style.display=tab==='wants'?'grid':'none';
+}
+function openEditProfile(){
+  document.getElementById('ep-name').value=ME.name||'';
+  document.getElementById('ep-area').value=ME.area||'';
+  document.getElementById('ep-bio').value=ME.bio||'';
+  document.getElementById('modal-edit-profile').classList.add('open');
+}
+async function saveProfile(){
+  const name=document.getElementById('ep-name').value.trim();
+  const err=document.getElementById('ep-err');err.textContent='';
+  if(!name){err.textContent='⚠️ お名前を入力してください';return}
+  const res=await gasPost({action:'updateProfile',memberId:ME.id,name,area:document.getElementById('ep-area').value.trim(),bio:document.getElementById('ep-bio').value.trim()});
+  if(res.ok){
+    ME.name=name;ME.area=document.getElementById('ep-area').value.trim();ME.bio=document.getElementById('ep-bio').value.trim();
+    sessionStorage.setItem('dacha_ex_user',JSON.stringify(ME));
+    document.getElementById('top-name').textContent=ME.name;
+    closeModalById('modal-edit-profile');toast('🌿 プロフィールを更新しました');loadProfile(ME.id);
+  } else err.textContent='⚠️ '+(res.error||'エラー');
+}
+
+/* ════════════════════════════════════════════════
+   IMAGE HELPERS
+════════════════════════════════════════════════ */
+function previewImg(inputId,previewId){
+  const f=document.getElementById(inputId).files[0];if(!f) return;
+  if(f.size>2*1024*1024){toast('⚠️ 画像は2MB以下にしてください');return}
+  const r=new FileReader();
+  r.onload=ev=>{
+    imgB64_item=ev.target.result;
+    document.getElementById(previewId+'-img').src=imgB64_item;
+    document.getElementById(previewId).style.display='block';
+  };
+  r.readAsDataURL(f);
+}
+function clearImg(inputId,previewId){
+  imgB64_item=null;document.getElementById(previewId).style.display='none';document.getElementById(inputId).value='';
+}
+
+/* ════════════════════════════════════════════════
+   MODAL HELPERS
+════════════════════════════════════════════════ */
+function closeModalById(id){ document.getElementById(id).classList.remove('open') }
+function closeModal(id,e){ if(e.target===document.getElementById(id)) closeModalById(id) }
+
+/* ════════════════════════════════════════════════
+   ENTER KEY
+════════════════════════════════════════════════ */
+['l-email','l-pw'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()}));
+['r-name','r-email','r-pw','r-pw2','r-area','r-code'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doRegister()}));
+
+/* ════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════ */
+(()=>{
+  const saved=sessionStorage.getItem('dacha_ex_user');
+  if(saved){
+    const u=JSON.parse(saved);
+    ME=u;
+    document.getElementById('top-name').textContent=u.name;
+    document.getElementById('topbar').style.display='flex';
+    nav('market');
+    if(IS_DEMO) toast('🏮 デモモード（GAS未設定）');
+  }
+})();
+</script>
+</body>
+</html>
