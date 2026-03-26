@@ -48,7 +48,8 @@
     "addressCountry": "JP"
   },
   "sameAs": [
-    "https://line.me/ti/g2/pwFzSZ2k4qTnz3UR9od4LJJNcraxeg7T4XXvfg"
+    "https://line.me/ti/g2/pwFzSZ2k4qTnz3UR9od4LJJNcraxeg7T4XXvfg",
+    "https://x.com/JDA_2024"
   ],
   "contactPoint": {
     "@type": "ContactPoint",
@@ -118,6 +119,7 @@
     --golden: #c9942a;
     --ink: #2a1f14;
     --light-moss: #d4e8c4;
+    --x-black: #000000;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -168,7 +170,7 @@
   .logo-leaf { font-size: 22px; display: inline-block; animation: sway 3s ease-in-out infinite; }
   @keyframes sway { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
 
-  nav { display: flex; gap: 36px; }
+  nav { display: flex; gap: 36px; align-items: center; }
   nav a {
     font-family: 'Shippori Mincho', serif;
     font-size: 12px; color: var(--warm-brown);
@@ -182,6 +184,28 @@
   }
   nav a:hover { color: var(--dusty-rose); }
   nav a:hover::after { width: 100%; }
+
+  /* X (Twitter) ボタン — ヘッダー用 */
+  .btn-x-header {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 12px; letter-spacing: 0.1em;
+    padding: 6px 14px; border-radius: 50px;
+    background: var(--x-black); color: #fff;
+    text-decoration: none;
+    border: 2px solid var(--x-black);
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+  .btn-x-header:hover {
+    background: transparent;
+    color: var(--x-black);
+  }
+  .btn-x-header::after { display: none !important; }
+  .x-icon {
+    width: 13px; height: 13px;
+    fill: currentColor; flex-shrink: 0;
+  }
 
   /* HERO */
   .hero {
@@ -222,28 +246,22 @@
   }
   .hero-eyebrow .star { color: var(--golden); }
 
-  /* H1: 全画面サイズで常に2行表示 */
   .hero h1 {
     font-family: 'Shippori Mincho', serif;
     font-weight: 800;
-    /* 2行タイトルに最適な行間 — 詰めすぎず空きすぎず */
     line-height: 1.0;
     color: var(--forest);
     letter-spacing: 0.06em;
-    /* eyebrow との間：タイトル感を持たせる余白 */
     margin-top: 0;
-    /* リード文との間：H1の重さに見合う余白 */
     margin-bottom: 0.9em;
     animation: fadeUp 1.1s 0.25s ease both;
     font-size: clamp(36px, 5.5vw, 80px);
     white-space: normal;
   }
-  /* 改行タグ：常時表示 */
   .hero h1 .h1-br { display: block; }
 
   .hero-lead {
     font-size: clamp(13px, 1.4vw, 16px);
-    /* リード文は本文的な行間でゆったりと */
     line-height: 2.2;
     color: var(--warm-brown);
     letter-spacing: 0.07em;
@@ -251,7 +269,6 @@
     margin: 0 auto 48px;
     animation: fadeUp 1.1s 0.45s ease both;
   }
-  /* hero-lead の <br> はタブレット以下で非表示に */
   .hero-lead .lead-br { display: inline; }
 
   .hero-cta {
@@ -276,6 +293,18 @@
     transition:all 0.35s;
   }
   .btn-ghost:hover { border-color:var(--warm-brown); background:rgba(107,76,42,0.06); }
+
+  /* X ボタン — ヒーロー CTA 用 */
+  .btn-x-hero {
+    font-family:'Shippori Mincho',serif;
+    font-size:13px; letter-spacing:0.18em;
+    padding:15px 40px; border-radius:50px;
+    background: var(--x-black); color: #fff;
+    text-decoration:none; border:2px solid var(--x-black);
+    transition:all 0.35s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-x-hero:hover { background:transparent; color:var(--x-black); }
+  .btn-x-hero .x-icon { width:14px; height:14px; fill:currentColor; }
 
   .scroll-cue {
     position:absolute; bottom:44px; left:50%; transform:translateX(-50%);
@@ -456,6 +485,55 @@
     color: rgba(250,246,237,0.45);
   }
 
+  /* SNS セクション */
+  #sns-follow { background: var(--cream); }
+  .sns-wrap {
+    max-width: 680px; margin: 0 auto; text-align: center;
+  }
+  .sns-cards {
+    display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+    margin-top: 48px;
+  }
+  .sns-card {
+    flex: 1; min-width: 240px; max-width: 300px;
+    background: var(--parchment);
+    border: 1px solid rgba(90,122,74,0.18);
+    border-radius: 10px;
+    padding: 40px 32px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .sns-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.09); }
+  .sns-card-icon { font-size: 48px; display: block; margin-bottom: 16px; }
+  .sns-card h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 17px; font-weight: 700; color: var(--forest);
+    letter-spacing: 0.08em; margin-bottom: 10px;
+  }
+  .sns-card p {
+    font-size: 12px; line-height: 2.2; color: var(--warm-brown);
+    letter-spacing: 0.05em; margin-bottom: 24px;
+  }
+
+  /* X (Twitter) フォローボタン — SNSカード用 */
+  .btn-x-follow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 13px; letter-spacing: 0.14em; font-weight: 700;
+    padding: 13px 32px; border-radius: 50px;
+    background: var(--x-black); color: #fff;
+    text-decoration: none;
+    border: 2px solid var(--x-black);
+    transition: all 0.35s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .btn-x-follow:hover {
+    background: transparent; color: var(--x-black);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  }
+  .btn-x-follow .x-icon { width: 14px; height: 14px; fill: currentColor; }
+
   /* FOOTER */
   footer{background:var(--forest);color:var(--cream);padding:84px 52px 44px;position:relative;overflow:hidden}
   footer::before{content:"🌿";position:absolute;right:-30px;bottom:-20px;font-size:220px;opacity:0.05;transform:rotate(-18deg);pointer-events:none}
@@ -470,6 +548,32 @@
   .footer-line{border:none;border-top:1px solid rgba(250,246,237,0.14);margin-bottom:28px}
   .footer-bottom{display:flex;justify-content:space-between;align-items:center;font-family:'Shippori Mincho',serif;font-size:11px;opacity:0.45;letter-spacing:0.1em;position:relative;z-index:1}
 
+  /* フッター SNS リンク */
+  .footer-sns {
+    display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;
+  }
+  .footer-sns-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 11px; letter-spacing: 0.12em;
+    padding: 7px 16px; border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .footer-sns-btn.line {
+    background: rgba(6,199,85,0.15);
+    color: #06C755;
+    border: 1px solid rgba(6,199,85,0.35);
+  }
+  .footer-sns-btn.line:hover { background: rgba(6,199,85,0.28); }
+  .footer-sns-btn.x-tw {
+    background: rgba(255,255,255,0.10);
+    color: rgba(250,246,237,0.85);
+    border: 1px solid rgba(250,246,237,0.25);
+  }
+  .footer-sns-btn.x-tw:hover { background: rgba(255,255,255,0.20); color: #fff; }
+  .footer-sns-btn .x-icon { width: 12px; height: 12px; fill: currentColor; }
+
   /* REVEAL */
   .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.9s ease,transform 0.9s ease}
   .reveal.visible{opacity:1;transform:translateY(0)}
@@ -478,22 +582,16 @@
   /* =====================
      RESPONSIVE — 3 TIERS
   ===================== */
-
-  /* ハンバーガーはデフォルト非表示 */
   .hamburger { display: none; }
 
-  /* ── タブレット (〜1024px) ── */
   @media (max-width: 1024px) {
     header { padding: 12px 28px; }
     nav { gap: 20px; }
     nav a { font-size: 11px; }
     section { padding: 88px 36px; }
-
-    /* H1: タブレットでフォントサイズ調整（2行維持） */
     .hero h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.0; margin-bottom: 0.85em; }
     .hero-lead { font-size: clamp(13px, 1.6vw, 15px); line-height: 2.1; margin-bottom: 40px; }
     .hero-lead .lead-br { display: none; }
-
     .about-wrap { gap: 40px; }
     .pillars { gap: 20px; }
     .how-steps { grid-template-columns: repeat(2,1fr); gap: 28px 0; }
@@ -502,14 +600,12 @@
     .nation-wrap { gap: 40px; }
     .footer-inner { gap: 40px; }
     .line-box { padding: 48px 40px; }
+    .btn-x-header { font-size: 11px; padding: 5px 11px; }
   }
 
-  /* ── スマートフォン 横 / 小タブ (〜768px) ── */
   @media (max-width: 768px) {
     header { padding: 12px 20px; }
     nav { display: none; }
-
-    /* ハンバーガーメニュー */
     .hamburger {
       display: flex; flex-direction: column; gap: 5px;
       cursor: pointer; padding: 4px; z-index: 110;
@@ -536,10 +632,7 @@
       font-size: 28px; color: var(--warm-brown); cursor: pointer;
       font-family: serif; line-height: 1;
     }
-
     section { padding: 72px 20px; }
-
-    /* H1: スマホでフォントサイズ調整（2行維持） */
     .hero { padding: 110px 20px 80px; }
     .hero-eyebrow { margin-bottom: 24px; }
     .hero h1 { font-size: clamp(30px, 8.5vw, 48px); letter-spacing: 0.02em; line-height: 1.0; margin-bottom: 0.8em; }
@@ -548,8 +641,7 @@
     .hero-lead { font-size: 13px; line-height: 2.3; }
     .hero-lead .lead-br { display: none; }
     .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
-    .btn-primary, .btn-ghost { width: 100%; max-width: 300px; justify-content: center; padding: 14px 28px; }
-
+    .btn-primary, .btn-ghost, .btn-x-hero { width: 100%; max-width: 300px; justify-content: center; padding: 14px 28px; }
     .about-wrap,.nation-wrap,.footer-inner { grid-template-columns: 1fr; }
     .pillars,.community-grid,.stories { grid-template-columns: 1fr; }
     .how-steps { grid-template-columns: repeat(2,1fr); }
@@ -560,18 +652,14 @@
     .btn-line { width: 100%; max-width: 320px; justify-content: center; padding: 16px 20px; }
     footer { padding: 56px 20px 32px; }
     .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .sns-cards { flex-direction: column; align-items: center; }
   }
 
-  /* ── スマートフォン 縦 (〜480px) ── */
   @media (max-width: 480px) {
     .page-border { border-width: 8px; }
-
-    /* H1: 最小サイズでも2行で読みやすく */
     .hero h1 { font-size: clamp(28px, 9vw, 40px); line-height: 1.0; margin-bottom: 0.75em; }
     .hero-lead { font-size: 12.5px; line-height: 1.95; margin-bottom: 28px; }
-    .hero-eyebrow { display: none; } /* 超小画面では非表示 */
-    .hero-lead { font-size: 12.5px; }
-
+    .hero-eyebrow { display: none; }
     .section-title { font-size: clamp(24px, 7vw, 36px); }
     .items-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
     .item-card { padding: 20px 8px 14px; }
@@ -584,13 +672,19 @@
     .survey-box { padding: 28px 16px; }
     .line-box { padding: 32px 16px; }
   }
-
 </style>
 </head>
 <body>
 
 <div class="page-border"></div>
 <div id="cursor">🍃</div>
+
+<!-- X アイコン SVG テンプレート (再利用) -->
+<svg style="display:none">
+  <symbol id="x-logo" viewBox="0 0 24 24">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.261 5.636 5.903-5.636zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </symbol>
+</svg>
 
 <!-- HEADER -->
 <header>
@@ -605,6 +699,10 @@
     <a href="#nationwide">全国展開</a>
     <a href="#survey">アンケート</a>
     <a href="#line-join" style="color:var(--moss);font-weight:700;">💬 LINE参加</a>
+    <a href="https://x.com/JDA_2024" target="_blank" rel="noopener" class="btn-x-header" aria-label="X（Twitter）でフォロー">
+      <svg class="x-icon"><use href="#x-logo"/></svg>
+      フォロー
+    </a>
   </nav>
   <div class="hamburger" id="hamburger" aria-label="メニュー">
     <span></span><span></span><span></span>
@@ -620,6 +718,10 @@
   <a href="#nationwide" class="mobile-link">全国展開</a>
   <a href="#survey" class="mobile-link">アンケート</a>
   <a href="#line-join" class="mobile-link" style="color:#06C755;font-weight:700;">💬 LINE参加</a>
+  <a href="https://x.com/JDA_2024" target="_blank" rel="noopener" class="mobile-link" style="display:inline-flex;align-items:center;gap:8px;">
+    <svg class="x-icon" style="width:18px;height:18px;fill:currentColor;"><use href=""/></svg>
+    X でフォロー
+  </a>
 </nav>
 
 <!-- HERO -->
@@ -646,6 +748,10 @@
       <a href="#barter" class="btn-primary">🔄 物々交換を知る</a>
       <a href="#about" class="btn-ghost">ダーチャとは</a>
       <a href="#line-join" class="btn-ghost" style="border-color:#06C755;color:#06C755;">💬 LINEで参加</a>
+      <a href="https://x.com/JDA_2024" target="_blank" rel="noopener" class="btn-x-hero">
+        <svg class="x-icon"><use href="#x-logo"/></svg>
+        X でフォロー
+      </a>
     </div>
   </div>
   <div class="scroll-cue">SCROLL</div>
@@ -834,6 +940,36 @@
 
 <div class="ornament">✦ ✧ ✦ ✧ ✦</div>
 
+<!-- SNS FOLLOW -->
+<section id="sns-follow" aria-label="SNSフォロー">
+  <div class="section-label">FOLLOW US</div>
+  <h2 class="section-title reveal">SNSで最新情報を<br>チェックしよう。</h2>
+  <p class="section-lead reveal">物々交換の情報、イベントのお知らせ、全国のダーチャ仲間の声を毎日発信しています。</p>
+  <div class="sns-wrap">
+    <div class="sns-cards">
+      <div class="sns-card reveal d1">
+        <span class="sns-card-icon">🐦</span>
+        <h3>X（旧Twitter）</h3>
+        <p>最新の活動情報・物々交換の話題・ダーチャ仲間の投稿をリアルタイムで発信中。</p>
+        <a href="https://x.com/JDA_2024" target="_blank" rel="noopener" class="btn-x-follow">
+          <svg class="x-icon"><use href=""/></svg>
+          をフォロー
+        </a>
+      </div>
+      <div class="sns-card reveal d2">
+        <span class="sns-card-icon">💬</span>
+        <h3>LINE オープンチャット</h3>
+        <p>全国のダーチャ仲間とリアルタイムで交流。物々交換のマッチングも活発です。</p>
+        <a href="https://line.me/ti/g2/pwFzSZ2k4qTnz3UR9od4LJJNcraxeg7T4XXvfg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+           target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:8px;font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:0.14em;font-weight:700;padding:13px 32px;border-radius:50px;background:#06C755;color:#fff;text-decoration:none;border:2px solid #06C755;transition:all 0.35s;box-shadow:0 4px 16px rgba(6,199,85,0.28);">
+          💬 LINEに参加する
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- SURVEY -->
 <section id="survey">
   <div class="section-label">SURVEY</div>
@@ -879,6 +1015,16 @@
     <div class="footer-brand">
       <div class="footer-brand-name">🌿 日本ダーチャ協会</div>
       <p>大地に根ざした農的生活・自然農法の文化と、物々交換による人と人のつながりを日本全国に広げ、持続可能で温かい市民社会をつくります。</p>
+      <div class="footer-sns">
+        <a href="https://x.com/JDA_2024" target="_blank" rel="noopener" class="footer-sns-btn x-tw" aria-label="X（Twitter）">
+          <svg class="x-icon"><use href="#x-logo"/></svg>
+          @JDA_2024
+        </a>
+        <a href="https://line.me/ti/g2/pwFzSZ2k4qTnz3UR9od4LJJNcraxeg7T4XXvfg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+           target="_blank" rel="noopener" class="footer-sns-btn line">
+          💬 LINE
+        </a>
+      </div>
     </div>
     <div class="footer-nav">
       <h4>NAVIGATION</h4>
@@ -897,6 +1043,10 @@
       <ul>
         <li><a href="#">所在地：福岡県</a></li>
         <li><a href="#">日本ダーチャ協会</a></li>
+        <li><a href="https://x.com/JDA_2024" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;">
+          <svg style="width:11px;height:11px;fill:currentColor;opacity:0.72;"><use href="#x-logo"/></svg>
+          X（Twitter）
+        </a></li>
       </ul>
     </div>
   </div>
